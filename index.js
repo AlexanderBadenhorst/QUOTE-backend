@@ -14,6 +14,7 @@ const User = require('./models/user.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const dotenv = require('dotenv');
+const path = require('path');
 dotenv.config();
 
 app.use(cors())
@@ -120,6 +121,12 @@ app.delete('/api/quote', async (req, res) => {
 		res.json({ status: 'error', error: 'invalid token' })
 	}
 })
+
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(1337, () => {
 	console.log('Server started on 1337')
